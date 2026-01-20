@@ -1,14 +1,21 @@
 #!/bin/bash
 
-# Compare kernel versions (strip architecture suffix for ARM64 compatibility)
-RUNNING_VERSION=$(uname -r | sed 's/-\(arch\|aarch64\).*$//')
-INSTALLED_VERSION=$(pacman -Q linux 2>/dev/null | awk '{print $2}')
+normalize_kernel_version() {
+  sed -E 's/-arch/.arch/; s/-aarch64/.aarch64/; s/-arm64/.arm64/'
+}
 
-if [ "$RUNNING_VERSION" != "$INSTALLED_VERSION" ]; then
-  gum confirm "Linux kernel has been updated. Reboot?" && omarchy-state clear re*-required && sudo reboot now
+RUNNING_VERSION=$(uname -r | normalize_kernel_version)
+INSTALLED_VERSION=$(pacman -Q linux 2>/dev/null | awk '{print $2}' | normalize_kernel_version)
+
+if [ -z "$INSTALLED_VERSION" ]; then
+  INSTALLED_VERSION=$(pacman -Q linux-aarch64 2>/dev/null | awk '{print $2}' | normalize_kernel_version)
+fi
+
+if [ -n "$INSTALLED_VERSION" ] && [ "$RUNNING_VERSION" != "$INSTALLED_VERSION" ]; then
+  gum confirm "Linux kernel has been updated. Reboot?" && omarchy-cmd-reboot
 
 elif [ -f "$HOME/.local/state/omarchy/reboot-required" ]; then
-  gum confirm "Updates require reboot. Ready?" && omarchy-state clear re*-required && sudo reboot now
+  gum confirm "Updates require reboot. Ready?" && omarchy-cmd-reboot
 fi
 
 for file in "$HOME"/.local/state/omarchy/restart-*-required; do

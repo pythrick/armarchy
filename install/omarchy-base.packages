@@ -3,10 +3,13 @@
 # Packages that don't work on ARM are in omarchy-x86.packages
 
 aether
+alacritty
+asdcontrol
 avahi
 bash-completion
 bat
 bluetui
+bolt
 brightnessctl
 btop
 clang
@@ -17,6 +20,7 @@ cups-pdf
 docker
 docker-buildx
 docker-compose
+dotnet-runtime-9.0
 dust
 evince
 exfatprogs
@@ -40,6 +44,9 @@ gvfs-mtp
 gvfs-nfs
 gvfs-smb
 hypridle
+hyprland
+hyprland-guiutils
+hyprland-preview-share-picker
 hyprlock
 hyprpicker
 hyprsunset
@@ -72,6 +79,12 @@ noto-fonts-emoji
 noto-fonts-extra
 nss-mdns
 nvim
+obs-studio
+obsidian
+omarchy-chromium
+omarchy-nvim
+omarchy-walker
+opencode
 pamixer
 playerctl
 plocate

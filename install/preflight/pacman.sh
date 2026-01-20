@@ -8,8 +8,14 @@ if [[ -n ${OMARCHY_ONLINE_INSTALL:-} ]]; then
     sudo cp -f ~/.local/share/omarchy/default/pacman/mirrorlist.arm /etc/pacman.d/mirrorlist
     sudo cp -f ~/.local/share/omarchy/default/pacman/mirrorlist.asahi-alarm /etc/pacman.d/mirrorlist.asahi-alarm
   else
-    sudo cp -f ~/.local/share/omarchy/default/pacman/pacman.conf /etc/pacman.conf
-    sudo cp -f ~/.local/share/omarchy/default/pacman/mirrorlist /etc/pacman.d/mirrorlist
+    # Configure pacman
+    if [[ ${OMARCHY_MIRROR:-} == "edge" ]] ; then
+      sudo cp -f ~/.local/share/omarchy/default/pacman/pacman-edge.conf /etc/pacman.conf
+      sudo cp -f ~/.local/share/omarchy/default/pacman/mirrorlist-edge /etc/pacman.d/mirrorlist
+    else
+      sudo cp -f ~/.local/share/omarchy/default/pacman/pacman-stable.conf /etc/pacman.conf
+      sudo cp -f ~/.local/share/omarchy/default/pacman/mirrorlist-stable /etc/pacman.d/mirrorlist
+    fi
 
     # Add omarchy signing key
 
